@@ -2,14 +2,26 @@
 #include <string.h>
 #define MAX 25
 
-
-void Cadastraraluno()
+void linha()
 {
-    char nome[MAX][80];
-    int idade[MAX];
-    char curso[MAX][120];
-    int quantidade = 0;
+    printf("============================================================\n");
+}
 
+void Menu()
+{
+    linha();
+
+    printf("                     BEM VINDO AO MENU!!                 \n");
+    printf("1-CADASTRAR\n");
+    printf("2-LISTA\n");
+    printf("3-SALVAR\n");
+    printf("4-SAIR\n");
+
+    linha();
+}
+
+void Cadastraraluno(char nome[][80], int idade[], char curso[][120], int *quantidade);
+{
     if (quantidade >= MAX)
     {
         printf("Limite atingido\n");
@@ -18,19 +30,27 @@ void Cadastraraluno()
 
 
     printf("Qual o nome do aluno: ");
-    fgets(nome[quantidade],80, stdin);
-    nome[quantidade][strcspn(nome[quantidade], "\n")] = '\0';
+    fgets(nome[*quantidade],80, stdin);
+    nome[quantidade][strcspn(nome[*quantidade], "\n")] = '\0';
 
-    printf("Qual a idade do %s: ", nome);
-    scanf("%d", &idade[quantidade]);
+    printf("Qual a idade do %s: ", nome[*quantidade]);
+    scanf("%d", &idade[*quantidade]);
     getchar();
 
 
-    printf("Qual o curso que o %s esta cursando", nome[quantidade]);
-    fgets(curso[quantidade],120,stdin);
-    curso[quantidade][strcspn(curso[quantidade], "\n")] = '\0';
+    printf("Qual o curso que o %s esta cursando", nome[*quantidade]);
+    fgets(curso[*quantidade],120,stdin);
+    curso[*quantidade][strcspn(curso[*quantidade], "\n")] = '\0';
 
-    quantidade ++;
+    (*quantidade)++
 
-    printf("Aluno cadastrado!!");
+    printf("Aluno cadastrado!!\n")
+}
+
+
+int main()
+{
+    
+
+    Menu()
 }
