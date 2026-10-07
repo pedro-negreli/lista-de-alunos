@@ -61,8 +61,6 @@ void ListarLista(char nome[][80], int idade[], char curso[][120],int quantidade)
     }
 }
 
-
-
 void SalvarLista(char nome[][80], int idade[], char curso[][120],int quantidade)
 {
     FILE* arquivo;
@@ -77,7 +75,7 @@ void SalvarLista(char nome[][80], int idade[], char curso[][120],int quantidade)
 
     for(int i = 0; i < quantidade;i++)
     {
-        fprintf(arquivo, "%s,%d,%s\n",nome[i],idade[i],curso[i]);
+        fprintf(arquivo, "%s;%d;%s\n",nome[i],idade[i],curso[i]);
 
     }
 
