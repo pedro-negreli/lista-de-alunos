@@ -1,0 +1,11 @@
+CREATE DATABASE escola;
+GO
+
+
+
+CREATE TABLE alunos (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    nome VARCHAR(100) NOT NULL,
+    idade INT NOT NULL,
+    curso VARCHAR(100) NOT NULL
+);
