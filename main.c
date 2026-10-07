@@ -42,7 +42,7 @@ void CadastrarAluno(char nome[][80], int idade[], char curso[][120], int *quanti
     getchar();
 
 
-    printf("Qual o curso que o %s esta cursando", nome[*quantidade]);
+    printf("Qual o curso que o %s esta cursando: ", nome[*quantidade]);
     fgets(curso[*quantidade],120,stdin);
     curso[*quantidade][strcspn(curso[*quantidade], "\n")] = '\0';
 
@@ -69,7 +69,7 @@ void SalvarLista(char nome[][80], int idade[], char curso[][120],int quantidade)
 
     arquivo = fopen("alunos.csv", "w");
 
-    if (arquivo == NULL);
+    if (arquivo == NULL)
     {
         printf("Erro ao abrir o arquivo\n");
         return;
