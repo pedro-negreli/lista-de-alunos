@@ -7,8 +7,9 @@ void linha()
     printf("============================================================\n");
 }
 
-void Menu()
+int Menu()
 {
+    int escolha = 0;
     linha();
 
     printf("                     BEM VINDO AO MENU!!                 \n");
@@ -18,11 +19,14 @@ void Menu()
     printf("4-SAIR\n");
 
     linha();
+
+    scanf("%d",&escolha);
+    return escolha;
 }
 
-void Cadastraraluno(char nome[][80], int idade[], char curso[][120], int *quantidade);
+void CadastrarAluno(char nome[][80], int idade[], char curso[][120], int *quantidade)
 {
-    if (quantidade >= MAX)
+    if (*quantidade >= MAX)
     {
         printf("Limite atingido\n");
         return;
@@ -31,7 +35,7 @@ void Cadastraraluno(char nome[][80], int idade[], char curso[][120], int *quanti
 
     printf("Qual o nome do aluno: ");
     fgets(nome[*quantidade],80, stdin);
-    nome[quantidade][strcspn(nome[*quantidade], "\n")] = '\0';
+    nome[*quantidade][strcspn(nome[*quantidade], "\n")] = '\0';
 
     printf("Qual a idade do %s: ", nome[*quantidade]);
     scanf("%d", &idade[*quantidade]);
@@ -42,15 +46,48 @@ void Cadastraraluno(char nome[][80], int idade[], char curso[][120], int *quanti
     fgets(curso[*quantidade],120,stdin);
     curso[*quantidade][strcspn(curso[*quantidade], "\n")] = '\0';
 
-    (*quantidade)++
+    (*quantidade)++;
 
-    printf("Aluno cadastrado!!\n")
+    printf("Aluno cadastrado!!\n");
 }
 
 
 int main()
 {
-    
+    ///////////////// vetores paralelos///////////
+    char nome[MAX][80];
+    int idade[MAX];
+    char curso[MAX][120];
+////////////////////////////////////////////
+    int quantidade = 0;
+    int escolha;
+////////////////////////////////////////
 
-    Menu()
+do{
+    escolha = Menu();
+    switch (escolha)
+    {
+    case 1:
+        printf("Cadastrar\n");
+        break;
+    
+    case 2:
+        printf("Lista\n");
+        break;
+
+
+    case 3:
+        printf("Salvar\n");
+        break;
+
+    case 4:
+        printf("Sair\n");
+        break;
+
+    default:
+        printf("Não existe essa opção!!");
+        break;
+    }
+}while(escolha != 4);
+
 }
