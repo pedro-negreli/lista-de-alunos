@@ -1,38 +1,36 @@
 #include <stdio.h>
 #include <string.h>
-
+#define MAX 25
 
 
 void Cadastraraluno()
 {
-    char nome[80];
-    int idade;
-    char curso[120];
+    char nome[MAX][80];
+    int idade[MAX];
+    char curso[MAX][120];
+    int quantidade = 0;
 
-    printf("Qual o nome do aluno: ");
-    fgets(nome,80, stdin);
-    nome[strcspn(nome, "\n")] = '\0';
-
-    printf("Qual a idade do %s: ", nome);
-    scanf("%d", idade);
-
-    printf("Qual o curso que o %s esta cursando", nome);
-    fgets(curso,120,stdin);
-    curso[strcspn(curso, "\n")] = '\0';
-
-    FILE* alunos;
-
-    fopen("alunos.csv", "w");
-
-    if(alunos == NULL)
+    if (quantidade >= MAX)
     {
-        printf("Erro ao abrir o arquivo\n");
+        printf("Limite atingido\n");
         return;
     }
 
-    fprintf(alunos, "%s;%d;%s\n", nome, idade, curso);
 
-    fclose(alunos);
+    printf("Qual o nome do aluno: ");
+    fgets(nome[quantidade],80, stdin);
+    nome[quantidade][strcspn(nome[quantidade], "\n")] = '\0';
 
-    printf("Cadastro com sucesso!!");
+    printf("Qual a idade do %s: ", nome);
+    scanf("%d", &idade[quantidade]);
+    getchar();
+
+
+    printf("Qual o curso que o %s esta cursando", nome[quantidade]);
+    fgets(curso[quantidade],120,stdin);
+    curso[quantidade][strcspn(curso[quantidade], "\n")] = '\0';
+
+    quantidade ++;
+
+    printf("Aluno cadastrado!!");
 }
