@@ -31,7 +31,7 @@ void CadastrarAluno(char nome[][80], int idade[], char curso[][120], int *quanti
         printf("Limite atingido\n");
         return;
     }
-
+    getchar();
 
     printf("Qual o nome do aluno: ");
     fgets(nome[*quantidade],80, stdin);
@@ -51,6 +51,22 @@ void CadastrarAluno(char nome[][80], int idade[], char curso[][120], int *quanti
     printf("Aluno cadastrado!!\n");
 }
 
+void ListarLista(char nome[][80], int idade[], char curso[][120],int quantidade)
+{
+    for(int i = 0;i < quantidade;i++)
+    {   
+
+        printf("%d |        %s      |    %d    |     %s        |\n", i , nome[i], idade[i], curso[i]);
+        
+    }
+}
+
+
+
+
+
+
+
 
 int main()
 {
@@ -68,11 +84,13 @@ do{
     switch (escolha)
     {
     case 1:
-        printf("Cadastrar\n");
+        CadastrarAluno(nome, idade, curso, &quantidade);
         break;
     
     case 2:
         printf("Lista\n");
+        printf("id |    nome     | idade |    curso   |\n");
+        ListarLista(nome, idade, curso, quantidade);
         break;
 
 
