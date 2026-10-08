@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #define MAX 25
 
 void linha()
@@ -81,7 +82,31 @@ void SalvarLista(char nome[][80], int idade[], char curso[][120],int quantidade)
 
     fclose(arquivo);
 }
+int EnviarBanco()
+{
+    int retorno;
 
+    retorno = system(
+        "bcp escola.dbo.alunos_import in alunos.csv"
+        "-S localhost, 1433"
+        "-U sa"
+        "-P \"$SQL_PASSAWORD\""
+        "-c "
+        "-t ';'"
+        "-r '\n' "
+        "-u"
+
+    );
+    
+    if(retorno != 0)
+    {
+        printf("Erro ao tentar enviar para o Banco\n");
+    }
+    
+    printf("Enviado para o banco com sucesso!!");
+
+
+}
 
 
 
@@ -114,6 +139,7 @@ do{
     case 3:
         printf("Salvar\n");
         SalvarLista(nome,idade,curso, quantidade);
+        EnviarBanco();
         break;
 
     case 4:
