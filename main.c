@@ -85,48 +85,47 @@ void SalvarLista(char nome[][80], int idade[], char curso[][120],int quantidade)
 
 int EnviarBanco()
 {
-    int retorno;
+   int retorno;
 
     retorno = system(
-        "bcp escola.dbo.alunos_import in envia.csv"
+        "bcp escola.dbo.alunos_import in envia.csv "
         "-S localhost,1433 "
         "-U sa "
         "-P \"$SQL_SA_PASSWORD\" "
         "-c "
         "-t';' "
-        "-r '\\n' "
+        "-r 0x0a "
         "-u"
     );
-    
+
     if(retorno != 0)
     {
         printf("Erro ao tentar enviar para o Banco\n");
+        return 0;
     }
-    
+
     printf("Enviado para o banco com sucesso!!\n");
-    return 1;
-
-
+    return 1;   
 }
 
 void CriarArquivoEnvio(char nome[][80], int idade[], char curso[][120],int quantidade,int enviados)
 {
-    FILE* arquivo;
+    FILE *arquivo;
 
     arquivo = fopen("envia.csv", "w");
 
     if(arquivo == NULL)
     {
-        printf("Erro ao criar arquvio enviar.csv\n");
-
+        printf("Erro ao criar arquivo envia.csv\n");
+        return;
     }
 
-    for(int i = enviados;i < quantidade;i++)
+    for(int i = enviados; i < quantidade; i++)
     {
-        fprintf(arquivo, "%s;%d;%s\n",nome[i][80],idade[i],curso[i][120]);
+        fprintf(arquivo, "%s;%d;%s\n",nome[i],idade[i],curso[i]);
     }
 
-fclose(arquivo);
+    fclose(arquivo);
 }
 
 int BuscarBanco()
@@ -162,7 +161,7 @@ void CarregarArquivo(char nome[][80], int idade[],char curso[][120], int *quanti
 
     arquivo = fopen("alunos.csv", "r");
 
-    if (arquivo == NULL)
+    if(arquivo == NULL)
     {
         printf("Erro ao abrir alunos.csv\n");
         return;
@@ -170,10 +169,10 @@ void CarregarArquivo(char nome[][80], int idade[],char curso[][120], int *quanti
 
     *quantidade = 0;
 
-    while (fgets(linha, sizeof(linha), arquivo) != NULL &&
-           *quantidade < MAX)
+    while(fgets(linha, sizeof(linha), arquivo) != NULL &&
+          *quantidade < MAX)
     {
-        if (sscanf(linha, "%79[^;];%d;%119[^\n]", nome[*quantidade], &idade[*quantidade], curso[*quantidade]) == 3)
+        if(sscanf(linha,"%79[^;];%d;%119[^\n]",nome[*quantidade],&idade[*quantidade],curso[*quantidade]) == 3)
         {
             (*quantidade)++;
         }
