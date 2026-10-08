@@ -87,7 +87,7 @@ int EnviarBanco()
     int retorno;
 
     retorno = system(
-        "bcp escola.dbo.alunos_import in alunos.csv "
+        "bcp escola.dbo.alunos_import in envia.csv"
         "-S localhost,1433 "
         "-U sa "
         "-P \"$SQL_SA_PASSWORD\" "
@@ -102,12 +102,31 @@ int EnviarBanco()
         printf("Erro ao tentar enviar para o Banco\n");
     }
     
-    printf("Enviado para o banco com sucesso!!");
+    printf("Enviado para o banco com sucesso!!\n");
     return 1;
 
 
 }
 
+void CriarArquivoEnvio(char nome[][80], int idade[], char curso[][120],int quantidade,int enviados)
+{
+    FILE* arquivo;
+
+    arquivo = fopen("envia.csv", "w");
+
+    if(arquivo == NULL)
+    {
+        printf("Erro ao criar arquvio enviar.csv\n");
+
+    }
+
+    for(int i = enviados;i < quantidade;i++)
+    {
+        fprintf(arquivo, "%s;%d;%s\n",nome[i][80],idade[i],curso[i][120]);
+    }
+
+fclose(arquivo);
+}
 
 
 int main()
@@ -119,6 +138,7 @@ int main()
 ////////////////////////////////////////////
     int quantidade = 0;
     int escolha;
+    int enviados = 0;
 ////////////////////////////////////////
 
 do{
@@ -139,7 +159,21 @@ do{
     case 3:
         printf("Salvar\n");
         SalvarLista(nome,idade,curso, quantidade);
-        EnviarBanco();
+        if(quantidade > enviados)
+        {
+            CriarArquivoEnvio(nome,idade,curso,quantidade,enviados);
+        
+
+            if (EnviarBanco())
+            {
+                enviados = quantidade;
+            }
+        }
+        else
+        {
+            printf("Nenhum aluno novo para enviar\n");
+        }
+
         break;
 
     case 4:
