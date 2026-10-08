@@ -87,15 +87,14 @@ int EnviarBanco()
     int retorno;
 
     retorno = system(
-        "bcp escola.dbo.alunos_import in alunos.csv"
-        "-S localhost, 1433"
-        "-U sa"
-        "-P \"$SQL_PASSAWORD\""
+        "bcp escola.dbo.alunos_import in alunos.csv "
+        "-S localhost,1433 "
+        "-U sa "
+        "-P \"$SQL_SA_PASSWORD\" "
         "-c "
-        "-t ';'"
-        "-r '\n' "
+        "-t';' "
+        "-r '\\n' "
         "-u"
-
     );
     
     if(retorno != 0)
@@ -104,6 +103,7 @@ int EnviarBanco()
     }
     
     printf("Enviado para o banco com sucesso!!");
+    return 1;
 
 
 }
