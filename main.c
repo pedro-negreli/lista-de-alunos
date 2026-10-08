@@ -82,6 +82,7 @@ void SalvarLista(char nome[][80], int idade[], char curso[][120],int quantidade)
 
     fclose(arquivo);
 }
+
 int EnviarBanco()
 {
     int retorno;
@@ -127,6 +128,45 @@ void CriarArquivoEnvio(char nome[][80], int idade[], char curso[][120],int quant
 
 fclose(arquivo);
 }
+
+void BuscarBanco()
+{
+    int retorno;
+
+    retorno = system(
+        "bcp \"SELECT nome, idade, curso FROM escola.dbo.alunos_import\""
+        "queryout alunos.csv"
+        "-S localhost, 1433"
+        "-U sa"
+        "-p \"$SQL_SA_PASSWORD\""
+        "-c "
+        "-t ';'"
+        "-r '\n"
+        "-u"
+    );
+    return retorno == 1;
+}
+
+void CarrergarArquivo(char nome[][80], int idade[],char curso[][120], int *quantidade)
+{
+    FILE *arquivo;
+
+    arquivo = fopen("alunos.csv", "r");
+    
+    if(arquivo == NULL)
+    {
+        printf("Erro ao abrir arquivo!!\n");
+    }
+
+    while(*quantidade < MAX && fscanf(arquivo," %79[%^;];%d;%119[^\n]",nome[*quantidade],idade[*quantidade],curso[*quantidade]) == 3)
+    {
+        (*quantidade)++;
+    }
+
+fcolse(arquivo);
+
+}
+
 
 
 int main()
