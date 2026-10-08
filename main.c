@@ -129,42 +129,59 @@ void CriarArquivoEnvio(char nome[][80], int idade[], char curso[][120],int quant
 fclose(arquivo);
 }
 
-void BuscarBanco()
+int BuscarBanco()
 {
-    int retorno;
+int retorno;
 
     retorno = system(
-        "bcp \"SELECT nome, idade, curso FROM escola.dbo.alunos_import\""
-        "queryout alunos.csv"
-        "-S localhost, 1433"
-        "-U sa"
-        "-p \"$SQL_SA_PASSWORD\""
+        "bcp \"SELECT nome, idade, curso FROM escola.dbo.alunos_import\" "
+        "queryout alunos.csv "
+        "-S localhost,1433 "
+        "-U sa "
+        "-P \"$SQL_SA_PASSWORD\" "
         "-c "
-        "-t ';'"
-        "-r '\n"
+        "-t';' "
+        "-r 0x0a "
         "-u"
     );
-    return retorno = 1;
+
+    if(retorno != 0)
+    {
+        printf("Erro ao buscar dados do banco\n");
+        return 0;
+    }
+
+    printf("Dados carregados do banco!\n");
+    return 1;
 }
 
-void CarrergarArquivo(char nome[][80], int idade[],char curso[][120], int *quantidade)
+void CarregarArquivo(char nome[][80], int idade[],char curso[][120], int *quantidade)
 {
     FILE *arquivo;
+    char linha[300];
 
     arquivo = fopen("alunos.csv", "r");
-    
-    if(arquivo == NULL)
+
+    if (arquivo == NULL)
     {
-        printf("Erro ao abrir arquivo!!\n");
+        printf("Erro ao abrir alunos.csv\n");
+        return;
     }
 
-    while(*quantidade < MAX && fscanf(arquivo," %79[%^;];%d;%119[^\n]",nome[*quantidade],idade[*quantidade],curso[*quantidade]) == 3)
+    *quantidade = 0;
+
+    while (fgets(linha, sizeof(linha), arquivo) != NULL &&
+           *quantidade < MAX)
     {
-        (*quantidade)++;
+        if (sscanf(linha, "%79[^;];%d;%119[^\n]", nome[*quantidade], &idade[*quantidade], curso[*quantidade]) == 3)
+        {
+            (*quantidade)++;
+        }
     }
 
-fclose(arquivo);
+    fclose(arquivo);
 
+    printf("%d alunos carregados.\n", *quantidade);
 }
 
 
@@ -190,14 +207,18 @@ do{
         break;
     
     case 2:
-        BuscarBanco(nome,idade,curso,&quantidade);
+if (BuscarBanco())
+    {
+        CarregarArquivo(nome,idade,curso,&quantidade);
+
         enviados = quantidade;
+
         printf("Lista\n");
         printf("id |    nome     | idade |    curso   |\n");
-        ListarLista(nome, idade, curso, quantidade);
-        break;
 
-
+        ListarLista(nome,idade,curso,quantidade);
+    }
+    break;
     case 3:
         printf("Salvar\n");
         SalvarLista(nome,idade,curso, quantidade);
