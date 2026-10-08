@@ -144,7 +144,7 @@ void BuscarBanco()
         "-r '\n"
         "-u"
     );
-    return retorno == 1;
+    return retorno = 1;
 }
 
 void CarrergarArquivo(char nome[][80], int idade[],char curso[][120], int *quantidade)
@@ -163,7 +163,7 @@ void CarrergarArquivo(char nome[][80], int idade[],char curso[][120], int *quant
         (*quantidade)++;
     }
 
-fcolse(arquivo);
+fclose(arquivo);
 
 }
 
@@ -190,6 +190,8 @@ do{
         break;
     
     case 2:
+        BuscarBanco(nome,idade,curso,&quantidade);
+        enviados = quantidade;
         printf("Lista\n");
         printf("id |    nome     | idade |    curso   |\n");
         ListarLista(nome, idade, curso, quantidade);
